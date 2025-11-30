@@ -1,0 +1,27 @@
+
+a {
+    color: #ffA200;
+    font-weight: bold;
+    opacity: 1;
+}
+a:hover {
+    color: #ffc35d;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: #ffffff;
+    background-color: #4b4b4e;
+    margin: 0;
+    padding: 20px;
+}
+
+.card {
+    border: 1px solid #ddd;
+    background: #fefefe26;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 5px 5px 0px #ffa200, inset 0 0 20px #ffffff76;
+    backdrop-filter: blur(50px);
+}
