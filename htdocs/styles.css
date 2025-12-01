@@ -25,3 +25,17 @@ body {
     box-shadow: 5px 5px 0px #ffa200, inset 0 0 20px #ffffff76;
     backdrop-filter: blur(50px);
 }
+.button {
+    border: 1px solid #ddd;
+    background: #fefefe;
+    border-radius: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin: 20px 0;
+    box-shadow: 5px 5px 0px #ffa200, inset 0 0 20px #ffffff76;
+    text-align: center;
+}
+.button:hover {
+    backdrop-filter: blur(50px);
+    background: #fefefe26;
+}

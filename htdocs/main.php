@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>My PHP Page</title>
+        <title>St Alphonsus School Management System</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="styles.css">
