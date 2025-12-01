@@ -8,26 +8,33 @@
     <body>
         <form class="card" method="POST" action="">
             <h1> Sign Up </h1>  
-            <label> First Name: &nbsp;<input type = "text" name = "fName" require></label>
+            <label> First Name: &nbsp;<input type = "text" name = "fName" required></label>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   
-            <label> Last Name: &nbsp;<input type = "text" name = "lName" require></label>
+            <label> Last Name: &nbsp;<input type = "text" name = "lName" required></label>
             <br><br>
-            <label>Enter Your Age: &nbsp;<input type ="number" name="age" requre> </label>
+            <label> Date of Birth: &nbsp;<input type ="date" name="dob" required> </label>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <label> Email: &nbsp; <input type = "email" name = "email" require></label>
+            <label> Email: &nbsp; <input type = "email" name = "email" required></label>
             <br><br>
-            <label> Phone Number: &nbsp;<input type = "number" name = "pNumber" require></label>
+            <label> Password: &nbsp;<input type="password" name="pass" required></label>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <label> Phone Number: &nbsp;<input type = "number" name = "pNumber" required></label>
             <br>
             <input class="button" type="submit" value="Sign Up">
         </form>
 
         <?php
-            $fName = $_POST["fName"];
-            $lName = $_POST["lName"];
-            $age = $_POST["age"];
-            $email = $_POST["email"];
-            $pNumber = $_POST["pNumber"];
-            
+            if ($_SERVER["REQUEST_METHOD"] === "POST") {
+                $fName = isset($_POST["fName"]) ? trim($_POST["fName"]) : "";
+                $lName = isset($_POST["lName"]) ? trim($_POST["lName"]) : "";
+                $dob = isset($_POST["dob"]) ? trim($_POST["dob"]) : "";
+                $email = isset($_POST["email"]) ? trim($_POST["email"]) :"";
+                $pass = isset($_POST["pass"]) ? trim($_POST["pass"]) : "";
+                $pNumber = isset($_POST["pNumber"]) ? trim($_POST["pNumber"]) :"";
+                $error =[];
+
+                //need to add validation for each field here
+            }
         
         ?>
     </body>
