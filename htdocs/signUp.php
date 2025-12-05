@@ -8,6 +8,7 @@
     <body>
         <form class="card" method="POST" action="">
             <h1> Sign Up </h1>  
+            <h3> Teacher Registration: </h3>
             <label> First Name: &nbsp;<input type = "text" name = "fName" required></label>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   
             <label> Last Name: &nbsp;<input type = "text" name = "lName" required></label>
@@ -19,11 +20,26 @@
             <label> Password: &nbsp;<input type="password" name="pass" required></label>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <label> Phone Number: &nbsp;<input type = "number" name = "pNumber" required></label>
+            <br><br>
+            <label> Address: &nbsp;<input type = "text" name = "address" required></label>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <label> Annual Salary: &nbsp;<input type = "number" step="0.01" name = "annualSalary" required></label>
+            <br><br>
+            <label> Background Check Passed: &nbsp;
+                <select name="backgroundCheck" required>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </label>
             <br>
             <input class="button" type="submit" value="Sign Up">
         </form>
 
+        <h5 style="text-align:center;">Already have an account? <a href="login.php">Log in here</a></h5>
+
         <?php
+        include "db_connect.php"; //connect to the database file
+
             if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $fName = isset($_POST["fName"]) ? trim($_POST["fName"]) : "";
                 $lName = isset($_POST["lName"]) ? trim($_POST["lName"]) : "";
@@ -31,6 +47,9 @@
                 $email = isset($_POST["email"]) ? trim($_POST["email"]) :"";
                 $pass = isset($_POST["pass"]) ? trim($_POST["pass"]) : "";
                 $pNumber = isset($_POST["pNumber"]) ? trim($_POST["pNumber"]) :"";
+                $address = isset($_POST["address"]) ? trim($_POST["address"]) : "";
+                $annualSalary = isset($_POST["annualSalary"]) ? trim($_POST["annualSalary"]) : 0;
+                $backgroundCheck = isset($_POST["backgroundCheck"]) ? intval($_POST["backgroundCheck"]) : 0;
                 $errors =[];
 
                 //need to add validation for each field here
@@ -84,18 +103,23 @@
 
                 // display any errors 
                 if (!empty($errors)) {
-                foreach ($errors as $error) {
-                    echo "<p style='color:red;'>$error</p>";
-                }
+                    foreach ($errors as $error) {
+                        echo "<p style='color:red;'>$error</p>";
+                    }
                 } else {
-                    
-                    echo "<p style='color:green;'>Login details received for $email.</p>";
-                    // add to database here
-                    //change the style later!
+                    // Insert teacher data into the teachers table, including email, dob, and password
+                    $teacherNames = $fName . ' ' . $lName;
+                    $stmt = $conn->prepare("INSERT INTO teachers (teacherNames, address, phoneNumber, annualSalary, backgroundCheck, Email, `D.O.B`, Password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                    $stmt->bind_param("sssdisss", $teacherNames, $address, $pNumber, $annualSalary, $backgroundCheck, $email, $dob, $pass);
+                    if ($stmt->execute()) {
+                        echo "<p style='color:green;'>Sign up successful!</p>";
+                    } else {
+                        echo "<p style='color:red;'>Error: " . $stmt->error . "</p>";
+                    }
+                    $stmt->close();
+                    $conn->close();
                 }
             }        
         ?>
     </body>
 </html>
-
-    

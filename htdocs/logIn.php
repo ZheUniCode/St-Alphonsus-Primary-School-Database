@@ -31,11 +31,15 @@
               <input class="button" type="submit" value="Log In" >
         </form>
 
+        <h5 style="text-align:center;">Don't have an account? <a href="signUp.php">Sign up here</a></h5>
+
         <?php
+        include "db_connect.php"; //connect to the database file
+        
         //only process form if submitted
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $email = isset($_POST["email"]) ? trim($_POST["email"]) : '';
-            $password = isset($_POST["pass"]) ? $_POST["pass"] : '';
+            $pass = isset($_POST["pass"]) ? $_POST["pass"] : '';
             $errors = [];
 
             //validate email
@@ -47,30 +51,29 @@
             }
 
             //validate password
-            if (empty($password)) {
+            if (empty($pass)) {
                 $errors[] = "Password is required.";
-            } elseif (strlen($password) < 8) {
-                $errors[] = "Password must have at least 8 characters.";
-                } elseif (
-                    // a function that checks if this character are not present in the password
-                    !preg_match('/[A-Z]/', $password) ||      
-                    !preg_match('/[a-z]/', $password) ||      
-                    !preg_match('/[0-9]/', $password) ||      
-                    !preg_match('/[^A-Za-z0-9]/', $password)  
-                ) {
-                    $errors[] = "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.";
             }
 
-            // display errors or success
+            // display errors or check database
             if (!empty($errors)) {
                 foreach ($errors as $error) {
                     echo "<p style='color:red;'>$error</p>";
                 }
             } else {
-                
-                echo "<p style='color:green;'>Login details received for $email.</p>";
-                // check against database here
-                //change the style later!
+                //Query the database for the user
+                $stmt = $conn->prepare("SELECT * FROM teachers WHERE Email = ? AND Password = ?");
+                $stmt->bind_param("ss", $email, $pass);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                if ($result->num_rows === 1) {
+                    header("Location: main.php");
+                    exit();
+                } else {
+                    echo "<p style='color:red;'>Invalid email or password.</p>";
+                }
+                $stmt->close();
+                $conn->close();
             }
         }
         ?>

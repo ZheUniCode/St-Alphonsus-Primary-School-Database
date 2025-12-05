@@ -11,8 +11,7 @@
                 <h1>St Alphonsus School Management System</h1>
                 <p>Welcome, Staff Member. Please select an action below:</p>
                 <ul>
-                    <li><a href="newStudent.php">Add New Student</a></li>
-                    <li><a href="pupils.php">View Students</a></li>
+                    <li><a href="pupils.php">Manage Students</a></li>
                     <li><a href="classes.php">Manage Classes</a></li>
                     <li><a href=".php">Record Attendance</a></li>
                     <li><a href=".php">Logout</a></li>
