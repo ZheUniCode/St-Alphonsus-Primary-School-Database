@@ -1,3 +1,134 @@
+/* Style all styled-input fields for sign up */
+.styled-input {
+    background: #fff;
+    color: #222;
+    border: 1px solid #ffa200;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    font-size: 1em;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.styled-input:focus {
+    border-color: #ffA200;
+    box-shadow: 0 0 8px #ffa20066;
+    outline: none;
+}
+/* Ensure .form-flex-group is always horizontal and responsive */
+.form-flex-group {
+        margin-top: 32px;
+        display: flex;
+        flex-direction: row;
+        gap: 32px;
+        align-items: flex-start;
+        justify-content: stretch;
+}
+
+/* Make details take equal width and stack on small screens */
+.form-details {
+        flex: 1 1 0;
+        min-width: 220px;
+        max-width: 100%;
+}
+
+@media (max-width: 700px) {
+    .form-flex-group {
+        flex-direction: column;
+        gap: 16px;
+    }
+}
+
+/* Style the select dropdown to match input fields */
+.select-pupil {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: 1px solid #ffa200;
+        margin-top: 8px;
+        font-size: 1em;
+        background: #fff;
+        color: #222;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+}
+.select-pupil:focus {
+        border-color: #ffA200;
+        box-shadow: 0 0 8px #ffa20066;
+        outline: none;
+}
+input[type="text"], textarea {
+    background: #fff;
+    color: #222;
+    border: 1px solid #ffa200;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    font-size: 1em;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+input[type="text"]:focus, textarea:focus {
+    border-color: #ffA200;
+    box-shadow: 0 0 8px #ffa20066;
+    outline: none;
+}
+label {
+    color: #fff;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+details summary.button {
+    color: #222;
+    font-size: 1.2em;
+    font-weight: bold;
+    background: #fff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    box-shadow: 5px 5px 0px #ffa200, inset 0 0 20px #ffffff76;
+    margin-bottom: 8px;
+    display: inline-block;
+}
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 20px 0;
+    background: #fefefe26;
+    color: #fff;
+    font-size: 1em;
+    box-shadow: 0 2px 8px #00000030;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+th, td {
+    border-radius: 8px;
+}
+
+th {
+    background-color: #ffffff;
+    color: #222;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #3a3a3d;
+}
+
+tr:hover {
+    background-color: #ffa20033;
+}
 
 a {
     color: #ffA200;
@@ -12,6 +143,8 @@ body {
     font-family: Arial, sans-serif;
     color: #ffffff;
     background-color: #4b4b4e;
+}
+a {
     margin: 0;
     padding: 20px;
 }
@@ -19,6 +152,7 @@ body {
 .card {
     border: 1px solid #ddd;
     background: #fefefe26;
+
     border-radius: 5px;
     padding: 20px;
     margin: 20px 0;
@@ -29,8 +163,9 @@ body {
     border: 1px solid #ddd;
     background: #fefefe;
     border-radius: 5px;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding: 12px;
+    font-size:medium;
+    font-weight: 600;
     margin: 20px 0;
     box-shadow: 5px 5px 0px #ffa200, inset 0 0 20px #ffffff76;
     text-align: center;

@@ -1,4 +1,8 @@
-CREATE TABLE Teachers (
+CREATE DATABASE IF NOT EXISTS school_database;
+USE school_database;
+
+
+CREATE TABLE IF NOT EXISTS Teachers (
     teacherId INT AUTO_INCREMENT PRIMARY KEY,
     teacherNames VARCHAR(100),
     address VARCHAR(255),
@@ -6,6 +10,7 @@ CREATE TABLE Teachers (
     annualSalary DECIMAL (10, 2),
     backgroundCheck BOOLEAN
     );
+    /*add email and password*/
 
 CREATE TABLE Class (
     classId INT AUTO_INCREMENT PRIMARY KEY,
@@ -37,7 +42,7 @@ CREATE TABLE Family (
     pupilId INT,
     FOREIGN KEY (pupilId) REFERENCES Pupils(pupilId),
     FOREIGN KEY (parentId) REFERENCES Parents(parentId)
-)
+);
 
 
 INSERT INTO Teachers (teacherId, teacherNames, address, phoneNumber, annualSalary, backgroundCheck)
@@ -153,4 +158,4 @@ SELECT teacherNames FROM Teachers JOIN Class ON Teachers.teacherId = Class.teach
 
 SELECT Parents.* FROM Parents JOIN Family ON Parents.parentId = Family.parentId JOIN Pupils ON Family.pupilId = Pupils.pupilId WHERE Pupils.pupilNames = 'Oliver Smith';
 
-SELECT Pupils.pupilNames FROM Pupils JOIN Family ON Parents.parentId = Family.pupilId WHERE Family.parentId = 2;
+SELECT Pupils.pupilNames FROM Pupils JOIN Family ON Pupils.pupilId = Family.pupilId WHERE Family.parentId = 2;

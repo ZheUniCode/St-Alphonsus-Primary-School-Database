@@ -7,31 +7,31 @@
     </head>
     <body>
         <form class="card" method="POST" action="">
-            <h1> Sign Up </h1>  
+            <h1> Teachers Sign Up </h1>  
             <h3> Teacher Registration: </h3>
-            <label> First Name: &nbsp;<input type = "text" name = "fName" required></label>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   
-            <label> Last Name: &nbsp;<input type = "text" name = "lName" required></label>
-            <br><br>
-            <label> Date of Birth: &nbsp;<input type ="date" name="dob" required> </label>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <label> Email: &nbsp; <input type = "email" name = "email" required></label>
-            <br><br>
-            <label> Password: &nbsp;<input type="password" name="pass" required></label>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <label> Phone Number: &nbsp;<input type = "number" name = "pNumber" required></label>
-            <br><br>
-            <label> Address: &nbsp;<input type = "text" name = "address" required></label>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <label> Annual Salary: &nbsp;<input type = "number" step="0.01" name = "annualSalary" required></label>
-            <br><br>
+            <label> First Name: &nbsp;<input class="styled-input" type = "text" name = "fName" required></label>
+    
+            <label> Last Name: &nbsp;<input class="styled-input" type = "text" name = "lName" required></label>
+ 
+            <label> Date of Birth: &nbsp;<input class="styled-input" type ="date" name="dob" required> </label>
+        
+            <label> Email: &nbsp; <input class="styled-input" type = "email" name = "email" required></label>
+     
+            <label> Password: &nbsp;<input class="styled-input" type="password" name="pass" required></label>
+          
+            <label> Phone Number: &nbsp;<input class="styled-input" type = "number" name = "pNumber" required></label>
+   
+            <label> Address: &nbsp;<input class="styled-input" type = "text" name = "address" required></label>
+            
+            <label> Annual Salary: &nbsp;<input class="styled-input" type = "number" step="0.01" name = "annualSalary" required></label>
+       
             <label> Background Check Passed: &nbsp;
-                <select name="backgroundCheck" required>
+                <select class="styled-input" name="backgroundCheck" required>
                     <option value="1">Yes</option>
                     <option value="0">No</option>
                 </select>
             </label>
-            <br>
+          
             <input class="button" type="submit" value="Sign Up">
         </form>
 
@@ -112,7 +112,9 @@
                     $stmt = $conn->prepare("INSERT INTO teachers (teacherNames, address, phoneNumber, annualSalary, backgroundCheck, Email, `D.O.B`, Password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
                     $stmt->bind_param("sssdisss", $teacherNames, $address, $pNumber, $annualSalary, $backgroundCheck, $email, $dob, $pass);
                     if ($stmt->execute()) {
-                        echo "<p style='color:green;'>Sign up successful!</p>";
+                        //redirect to login page after successful sign up
+                        header("Location: login.php");
+                        exit();
                     } else {
                         echo "<p style='color:red;'>Error: " . $stmt->error . "</p>";
                     }

@@ -1,5 +1,16 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pupils</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
 <?php
-   include 'db_connect.php';
+include 'db_connect.php'; //this file to connect to the database
 
    $sql = "SELECT classId, teacherId, className, classCapacity FROM Class";
    $result = $conn->query($sql);
@@ -22,3 +33,5 @@
 
 $conn->close();   //close the database connection
 ?>
+</body>
+</html>
