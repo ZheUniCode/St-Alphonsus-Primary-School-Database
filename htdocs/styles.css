@@ -1,23 +1,35 @@
-/* Style all styled-input fields for sign up */
-.styled-input {
+body {
+    /* creates three glowing orange spots to show off the blur*/
+    background-image: 
+        radial-gradient(circle at 20% 40%, rgba(255, 162, 0, 0.3), transparent 30%),
+        radial-gradient(circle at 50% 30%, rgba(255, 162, 0, 0.3), transparent 40%),
+        radial-gradient(circle at 80% 65%, rgba(255, 162, 0, 0.3), transparent 30%);
+        
+    /* keeps the spots in place while you scroll */
+    background-attachment: fixed; 
+    background-size: cover;
+}
+
+/* styles all input fields and dropdowns */
+.input-boxes {  
     background: #fff;
     color: #222;
     border: 1px solid #ffa200;
     border-radius: 8px;
     padding: 8px 12px;
     margin-bottom: 8px;
-    font-size: 1em;
+    font-size: 16px;
     width: 100%;
     box-sizing: border-box;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
-.styled-input:focus {
+.input-boxes:focus {
     border-color: #ffA200;
     box-shadow: 0 0 8px #ffa20066;
     outline: none;
 }
-/* Ensure .form-flex-group is always horizontal and responsive */
-.form-flex-group {
+/* it's to layout the two top sections of pupils.php and classes.php side-by-side using CSS flexbox. */
+.row {
         margin-top: 32px;
         display: flex;
         flex-direction: row;
@@ -26,41 +38,14 @@
         justify-content: stretch;
 }
 
-/* Make details take equal width and stack on small screens */
+/* Make inputs take equal width and stack on small screens */
 .form-details {
         flex: 1 1 0;
         min-width: 220px;
         max-width: 100%;
 }
 
-@media (max-width: 700px) {
-    .form-flex-group {
-        flex-direction: column;
-        gap: 16px;
-    }
-}
 
-/* Style the select dropdown to match input fields */
-.select-pupil {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 8px 12px;
-        border-radius: 8px;
-        border: 1px solid #ffa200;
-        margin-top: 8px;
-        font-size: 1em;
-        background: #fff;
-        color: #222;
-        transition: border-color 0.2s, box-shadow 0.2s;
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-}
-.select-pupil:focus {
-        border-color: #ffA200;
-        box-shadow: 0 0 8px #ffa20066;
-        outline: none;
-}
 input[type="text"], textarea {
     background: #fff;
     color: #222;
@@ -73,6 +58,7 @@ input[type="text"], textarea {
     box-sizing: border-box;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
+
 input[type="text"]:focus, textarea:focus {
     border-color: #ffA200;
     box-shadow: 0 0 8px #ffa20066;
@@ -80,19 +66,18 @@ input[type="text"]:focus, textarea:focus {
 }
 label {
     color: #fff;
-    font-size: 1.1em;
+    font-size: 16px;
     font-weight: bold;
 }
 details summary.button {
     color: #222;
-    font-size: 1.2em;
+    font-size: 18px;
     font-weight: bold;
     background: #fff;
     padding: 8px 16px;
     border-radius: 6px;
     box-shadow: 5px 5px 0px #ffa200, inset 0 0 20px #ffffff76;
     margin-bottom: 8px;
-    display: inline-block;
 }
 table {
     width: 100%;
@@ -101,7 +86,7 @@ table {
     margin: 20px 0;
     background: #fefefe26;
     color: #fff;
-    font-size: 1em;
+    font-size: 16px;
     box-shadow: 0 2px 8px #00000030;
     border-radius: 12px;
     overflow: hidden;
@@ -133,7 +118,7 @@ tr:hover {
 a {
     color: #ffA200;
     font-weight: bold;
-    opacity: 1;
+    text-decoration: none;
 }
 a:hover {
     color: #ffc35d;
@@ -160,6 +145,7 @@ a {
     backdrop-filter: blur(50px);
 }
 .button {
+    color: #ffA200;
     border: 1px solid #ddd;
     background: #fefefe;
     border-radius: 5px;
@@ -174,3 +160,45 @@ a {
     backdrop-filter: blur(50px);
     background: #fefefe26;
 }
+
+.dots-container{
+    display: flex;
+    width: 20px;
+    flex-direction: column;
+    text-align: center;
+    margin-top: auto;
+    gap: 3px;
+    cursor: pointer;
+}
+.dot{
+    height: 15px;
+    width: 15px;
+    border: 1.5px solid #fefefe;
+    background-color: #fefefe;
+    border-radius: 50%;
+    box-shadow: 2px 2px 0px #ffa200, inset 0 0 20px #ffffff76;
+}
+.dots-container:hover .dot{
+    backdrop-filter: blur(50px);
+    background: #fefefe26;
+}
+/* use with */
+/* <div class="dots-container">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+</div> */
+
+
+/*custom styled checkboxes for attendance */
+.checkbox {
+    width: 22px;
+    height: 22px;
+    accent-color: #ffa200;
+    cursor: pointer;
+}
+
+
+
+
+

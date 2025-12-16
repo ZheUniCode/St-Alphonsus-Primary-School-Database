@@ -34,6 +34,14 @@
         <h5 style="text-align:center;">Don't have an account? <a href="signUp.php">Sign up here</a></h5>
 
         <?php
+        session_start();
+        // Logout logic
+        if (isset($_GET['logout']) && $_GET['logout'] == 1) {
+            session_unset();
+            session_destroy();
+            header('Location: logIn.php');
+            exit();
+        }
         include "db_connect.php"; //connect to the database file
         
         //only process form if submitted
@@ -61,14 +69,20 @@
                     echo "<p style='color:red;'>$error</p>";
                 }
             } else {
-                //Query the database for the user
-                $stmt = $conn->prepare("SELECT * FROM teachers WHERE Email = ? AND Password = ?");
-                $stmt->bind_param("ss", $email, $pass);
+                // Query the database for the user by email only
+                $stmt = $conn->prepare("SELECT teacherId, Password FROM teachers WHERE Email = ?");
+                $stmt->bind_param("s", $email);
                 $stmt->execute();
                 $result = $stmt->get_result();
                 if ($result->num_rows === 1) {
-                    header("Location: main.php");
-                    exit();
+                    $row = $result->fetch_assoc();
+                    if (password_verify($pass, $row['Password'])) {
+                        $_SESSION['user_id'] = $row['teacherId'];
+                        header("Location: main.php");
+                        exit();
+                    } else {
+                        echo "<p style='color:red;'>Invalid email or password.</p>";
+                    }
                 } else {
                     echo "<p style='color:red;'>Invalid email or password.</p>";
                 }

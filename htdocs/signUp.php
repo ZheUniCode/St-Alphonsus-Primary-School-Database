@@ -1,43 +1,4 @@
-<html>
-    <head>
-        <title>Sign Up</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="styles.css">
-    </head>
-    <body>
-        <form class="card" method="POST" action="">
-            <h1> Teachers Sign Up </h1>  
-            <h3> Teacher Registration: </h3>
-            <label> First Name: &nbsp;<input class="styled-input" type = "text" name = "fName" required></label>
-    
-            <label> Last Name: &nbsp;<input class="styled-input" type = "text" name = "lName" required></label>
- 
-            <label> Date of Birth: &nbsp;<input class="styled-input" type ="date" name="dob" required> </label>
-        
-            <label> Email: &nbsp; <input class="styled-input" type = "email" name = "email" required></label>
-     
-            <label> Password: &nbsp;<input class="styled-input" type="password" name="pass" required></label>
-          
-            <label> Phone Number: &nbsp;<input class="styled-input" type = "number" name = "pNumber" required></label>
-   
-            <label> Address: &nbsp;<input class="styled-input" type = "text" name = "address" required></label>
-            
-            <label> Annual Salary: &nbsp;<input class="styled-input" type = "number" step="0.01" name = "annualSalary" required></label>
-       
-            <label> Background Check Passed: &nbsp;
-                <select class="styled-input" name="backgroundCheck" required>
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
-                </select>
-            </label>
-          
-            <input class="button" type="submit" value="Sign Up">
-        </form>
-
-        <h5 style="text-align:center;">Already have an account? <a href="login.php">Log in here</a></h5>
-
-        <?php
+<?php
         include "db_connect.php"; //connect to the database file
 
             if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -46,6 +7,7 @@
                 $dob = isset($_POST["dob"]) ? trim($_POST["dob"]) : "";
                 $email = isset($_POST["email"]) ? trim($_POST["email"]) :"";
                 $pass = isset($_POST["pass"]) ? trim($_POST["pass"]) : "";
+                $enc_pass = password_hash($pass, PASSWORD_DEFAULT); //hash the password for security
                 $pNumber = isset($_POST["pNumber"]) ? trim($_POST["pNumber"]) :"";
                 $address = isset($_POST["address"]) ? trim($_POST["address"]) : "";
                 $annualSalary = isset($_POST["annualSalary"]) ? trim($_POST["annualSalary"]) : 0;
@@ -96,10 +58,14 @@
                 //uk password are 11 char long
                 if (empty($pNumber)) {
                     $errors[] = "Phone number is required.";
+                } elseif (!preg_match('/^[0-9]{11}$/', $pNumber)) {
+                    $errors[] = "Phone number must be exactly 11 digits.";
                 }
-                    elseif (!preg_match('/^[0-9]{11}$/', $pNumber)) {
-                        $errors[] = "Phone number must be exactly 11 digits.";
-                    }
+
+                // annual salary must be positive
+                if ($annualSalary <= 0) {
+                    $errors[] = "Annual salary must be a positive number.";
+                }
 
                 // display any errors 
                 if (!empty($errors)) {
@@ -109,8 +75,8 @@
                 } else {
                     // Insert teacher data into the teachers table, including email, dob, and password
                     $teacherNames = $fName . ' ' . $lName;
-                    $stmt = $conn->prepare("INSERT INTO teachers (teacherNames, address, phoneNumber, annualSalary, backgroundCheck, Email, `D.O.B`, Password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-                    $stmt->bind_param("sssdisss", $teacherNames, $address, $pNumber, $annualSalary, $backgroundCheck, $email, $dob, $pass);
+                    $stmt = $conn->prepare("INSERT INTO teachers (teacherNames, address, phoneNumber, annualSalary, backgroundCheck, email, dob, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                    $stmt->bind_param("sssdisss", $teacherNames, $address, $pNumber, $annualSalary, $backgroundCheck, $email, $dob, $enc_pass);
                     if ($stmt->execute()) {
                         //redirect to login page after successful sign up
                         header("Location: login.php");
@@ -123,5 +89,46 @@
                 }
             }        
         ?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sign Up</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <form class="card" method="POST" action="">
+            <h1> Teachers Sign Up </h1>  
+            <h3> Teacher Registration: </h3>
+            <label> First Name: &nbsp;<input class="input-boxes" type = "text" name = "fName" required></label>
+    
+            <label> Last Name: &nbsp;<input class="input-boxes" type = "text" name = "lName" required></label>
+ 
+            <label> Date of Birth: &nbsp;<input class="input-boxes" type ="date" name="dob" required> </label>
+        
+            <label> Email: &nbsp; <input class="input-boxes" type = "email" name = "email" required></label>
+     
+            <label> Password: &nbsp;<input class="input-boxes" type="password" name="pass" required></label>
+          
+            <label> Phone Number: &nbsp;<input class="input-boxes" type = "number" name = "pNumber" required></label>
+   
+            <label> Address: &nbsp;<input class="input-boxes" type = "text" name = "address" required></label>
+            
+            <label> Annual Salary: &nbsp;<input class="input-boxes" type = "number" step="0.01" name = "annualSalary" required></label>
+       
+            <label> Background Check Passed: &nbsp;
+                <select class="input-boxes" name="backgroundCheck" required>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </label>
+          
+            <input class="button" type="submit" value="Sign Up">
+        </form>
+
+        <h5 style="text-align:center;">Already have an account? <a href="login.php">Log in here</a></h5>
+
+        
     </body>
 </html>

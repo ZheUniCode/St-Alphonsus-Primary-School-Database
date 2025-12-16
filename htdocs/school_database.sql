@@ -8,11 +8,13 @@ CREATE TABLE IF NOT EXISTS Teachers (
     address VARCHAR(255),
     phoneNumber VARCHAR(100),
     annualSalary DECIMAL (10, 2),
-    backgroundCheck BOOLEAN
-    );
-    /*add email and password*/
+    backgroundCheck BOOLEAN,
+    email VARCHAR(255),
+    password VARCHAR(255),
+    dob DATE
+);
 
-CREATE TABLE Class (
+CREATE TABLE IF NOT EXISTS Class (
     classId INT AUTO_INCREMENT PRIMARY KEY,
     teacherId INT,
     className VARCHAR(100),
@@ -21,7 +23,7 @@ CREATE TABLE Class (
     FOREIGN KEY (teacherId) REFERENCES Teachers(teacherId)
 );
 
-CREATE TABLE Pupils (
+CREATE TABLE IF NOT EXISTS Pupils (
     pupilId INT AUTO_INCREMENT PRIMARY KEY,
     classId INT,
     pupilNames VARCHAR(100),
@@ -30,19 +32,32 @@ CREATE TABLE Pupils (
     FOREIGN KEY (classId) REFERENCES Class(classId)
 );
 
-CREATE TABLE Parents (
+CREATE TABLE IF NOT EXISTS Parents (
     parentId INT AUTO_INCREMENT PRIMARY KEY,
     parentAddress VARCHAR(255),
     parentEmail VARCHAR(100),
     telephone VARCHAR(100)
 );
 
-CREATE TABLE Family (
+CREATE TABLE IF NOT EXISTS Family (
     parentId INT,
     pupilId INT,
     FOREIGN KEY (pupilId) REFERENCES Pupils(pupilId),
     FOREIGN KEY (parentId) REFERENCES Parents(parentId)
 );
+
+CREATE TABLE IF NOT EXISTS Attendance (
+    attendanceId INT AUTO_INCREMENT PRIMARY KEY,
+    classId INT NOT NULL,
+    pupilId INT NOT NULL,
+    teacherId INT NOT NULL,
+    attendanceDate DATE NOT NULL,
+    status ENUM('Present', 'Absent', 'Late', 'Excused') NOT NULL,
+    FOREIGN KEY (classId) REFERENCES Class(classId),
+    FOREIGN KEY (pupilId) REFERENCES Pupils(pupilId),
+    FOREIGN KEY (teacherId) REFERENCES Teachers(teacherId)
+);
+
 
 
 INSERT INTO Teachers (teacherId, teacherNames, address, phoneNumber, annualSalary, backgroundCheck)
@@ -146,16 +161,3 @@ VALUES
 INSERT INTO Family (parentId, pupilId) VALUES
 (1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7), (8, 8), (9, 9), (10, 10),
 (11, 11), (12, 12), (13, 13), (14, 14), (15, 15), (16, 16), (17, 17), (18, 18), (19, 19), (20, 20);
-
-
-SELECT * FROM Pupils WHERE pupilId = 9;
-
-SELECT * FROM Teachers WHERE teacherId = 15;
-
-SELECT * FROM Pupils WHERE classId = 3;
-
-SELECT teacherNames FROM Teachers JOIN Class ON Teachers.teacherId = Class.teacherId WHERE className = 'Year 5 - Science';
-
-SELECT Parents.* FROM Parents JOIN Family ON Parents.parentId = Family.parentId JOIN Pupils ON Family.pupilId = Pupils.pupilId WHERE Pupils.pupilNames = 'Oliver Smith';
-
-SELECT Pupils.pupilNames FROM Pupils JOIN Family ON Pupils.pupilId = Family.pupilId WHERE Family.parentId = 2;
