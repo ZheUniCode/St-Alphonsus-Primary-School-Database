@@ -97,7 +97,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="styles.css">
     </head>
-    <body>
+    <body style="max-width: 600px; margin: 40px auto;">
         <form class="card" method="POST" action="">
             <h1> Teachers Sign Up </h1>  
             <h3> Teacher Registration: </h3>

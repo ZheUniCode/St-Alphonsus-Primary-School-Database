@@ -20,13 +20,13 @@
             }
         </style>
     </head>
-    <body>
+    <body style="max-width: 600px; margin: 40px auto;">
         
         <form class="card" method = "Post">
               <h1>Log In</h1>
-              <label> Email: <br><input type="email" name="email" required></label>
+              <label> Email: <br><input type="email" name="email" class="input-boxes" required></label>
               <br>
-              <label> Password: <br><input type="password" name="pass" required></label>
+              <label> Password: <br><input type="password" name="pass" class="input-boxes" required></label>
               <br>
               <input class="button" type="submit" value="Log In" >
         </form>

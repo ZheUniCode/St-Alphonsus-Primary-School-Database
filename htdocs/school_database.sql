@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS Pupils (
 
 CREATE TABLE IF NOT EXISTS Parents (
     parentId INT AUTO_INCREMENT PRIMARY KEY,
+    parentNames VARCHAR(100),
     parentAddress VARCHAR(255),
     parentEmail VARCHAR(100),
     telephone VARCHAR(100)

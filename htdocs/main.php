@@ -64,9 +64,10 @@ if (!isset($_SESSION['user_id'])) {
             $conn->close();
             ?>
             <div style="margin-top:32px;">
-                <a href="pupils.php" class="button" style="display:block; margin-bottom:12px; text-align:center;">Manage Students</a>
                 <a href="classes.php" class="button" style="display:block; margin-bottom:12px; text-align:center;">Manage Classes</a>
+                <a href="pupils.php" class="button" style="display:block; margin-bottom:12px; text-align:center;">Manage Students</a>
                 <a href="attendance.php" class="button" style="display:block; margin-bottom:12px; text-align:center;">Record Attendance</a>
+                <a href="parents.php" class="button" style="display:block; margin-bottom:12px; text-align:center;">Manage Parents</a>
                 <a href="logIn.php?logout=1" class="button" style="display:block; background:#ffa200; color:#222; text-align:center;">Logout</a>
             </div>
         </div>

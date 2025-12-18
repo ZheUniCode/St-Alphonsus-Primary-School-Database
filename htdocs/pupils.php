@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
     <body>
+        <h1 class="card">Manage Pupils</h1>
         <?php
         session_start();
         if (!isset($_SESSION['user_id'])) {
@@ -34,9 +35,9 @@
 
             //validate Name with no numbers allowed
             if (preg_match('/[0-9]/', $pupilNames)) {
-                echo "<div class='card'><p class='error'>Double check your Full Name, must not contain numbers.</p></div>";
+                echo "<div class='card' style='background:#ff000022;'><p class='error'>Double check your Full Name, must not contain numbers.</p></div>";
             } elseif ($pupilClassId <= 0) {
-                echo "<div class='card'><p class='error'>Please select a class.</p></div>";
+                echo "<div class='card' style='background:#ff000022;'><p class='error'>Please select a class.</p></div>";
             } else {
                 // Insert the new pupil with the selected class
                 $stmt = $conn->prepare("INSERT INTO Pupils (pupilNames, pupilAddress, medicalInformation, classId) VALUES (?, ?, ?, ?)"); //prepare is a php function to prepare the sql query
@@ -62,7 +63,13 @@
             $_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['pupilId']) && isset($_POST['removePupil']) //check if the form is submitted via POST and the pupilId and removePupil fields are set
         ) {//make variable from the form data
             $pupilId = $_POST['pupilId'];
-            //use pupilid to delete any family members associated with the pupil first
+            //delete attendance records for this pupil to avoid foreign key constraint errors
+            $delAttendance = $conn->prepare("DELETE FROM Attendance WHERE pupilId = ?");
+            $delAttendance->bind_param("s", $pupilId);
+            $delAttendance->execute();
+            $delAttendance->close();
+
+            // Then, delete any family members associated with the pupil
             $delFamily = $conn->prepare("DELETE FROM family WHERE pupilId = ?");
             $delFamily->bind_param("s", $pupilId);
             $delFamily->execute();
@@ -71,10 +78,12 @@
             $stmt = $conn->prepare("DELETE FROM Pupils WHERE pupilId = ?");
             $stmt->bind_param("s", $pupilId);
             if ($stmt->execute()) {
-                //when the deletion is successful, it redirects the user to tge same page to prevent resubmission on refresh
+            //when the deletion is successful, it redirects the user to tge same page to prevent resubmission on refresh            
+                $_SESSION['success'] = "Pupil updated successfully.";
                 header("Location: " . $_SERVER['REQUEST_URI']);
                 exit();
-            } else {//error handling
+            }
+            else {//error handling
                 echo "<div class='card'>
                         <p class='error'>Error: " . $stmt->error . "</p>
                     </div>";
@@ -82,10 +91,10 @@
             $stmt->close();
         }
 
-        //get all classes for the dropdown filter
-        //fetch all classes from datebase into $classList
-        $classList = []; //hold the class data
-        $classResult = $conn->query("SELECT classId, className FROM Class"); //get all class IDs and names from the Class table
+
+        // Fetch all classes from database into $classList BEFORE rendering the Add New Pupil form
+        $classList = []; // hold the class data
+        $classResult = $conn->query("SELECT classId, className FROM Class"); // get all class IDs and names from the Class table
         if ($classResult && $classResult->num_rows > 0) {
             while($class = $classResult->fetch_assoc()) {
                 $classList[$class['classId']] = $class['className'];
@@ -93,10 +102,10 @@
         }
 
         //the add New Pupil and Remove Pupil dropdowns
-        echo "<div class='card row'>";
+        echo "<div class='row'>";
         echo "<details class='form-details'>";
         echo "<summary class='button'>Add New Pupil</summary>";
-        echo "<form method='POST' action='' class='pupil-form'>";
+        echo "<form method='POST' action='' class='card'>";
         echo "<label>Full Name:<br><input type='text' name='pupilNames' class='input-boxes' required></label>";
         echo "<label>Address:<br><input type='text' name='pupilAddress' class='input-boxes' required></label>";
         echo "<label>Medical Info:<br><input type='text' name='medicalInformation' class='input-boxes'></label>";
@@ -112,9 +121,9 @@
 
         echo "<details class='form-details'>";
         echo "<summary class='button'>Remove Pupil</summary>";
-        echo "<form method='POST' action='' class='pupil-form'>";
+        echo "<form method='POST' action='' class='card'>";
         echo "<label for='pupilId'>Select Pupil:<br>";
-        echo "<select id='pupilId' name='pupilId' class='input-boxes input-boxes' required>";
+        echo "<select id='pupilId' name='pupilId' class='input-boxes' required>";
         $pupilListResult = $conn->query("SELECT pupilId, pupilNames FROM Pupils");
         if ($pupilListResult && $pupilListResult->num_rows > 0) {
             while($pupil = $pupilListResult->fetch_assoc()) {
@@ -123,7 +132,7 @@
         }
         echo "</select></label>";
         echo "<input type='hidden' name='removePupil' value='1'>";
-        echo "<input type='submit' value='Remove Pupil' class='button remove-btn'>";
+        echo "<input type='submit' value='Remove Pupil' class='button'>";
         echo "</form>";
         echo "</details>";
         echo "</div>";
@@ -170,7 +179,17 @@
         echo "<input type='submit' value='Filter' class='button'>";
         echo "</form>";
 
-        // Display the pupils table
+        //display any success messages after adding, removing or editing a pupil page refresh
+        if (isset($_SESSION['success'])) {
+            echo "<div class='card'>
+                    <p class='success'>" . $_SESSION['success'] . "</p>
+                </div>";
+            unset($_SESSION['success']);
+        }
+
+        //////////////////////////////
+        // Display the pupils table///
+        //////////////////////////////
         if ($result->num_rows > 0) {
             echo "<table class=card>
                     <tr>
@@ -205,7 +224,7 @@
                 //shows the edit form if the 3 dots buttons are clicked
                 if ($showEdit) {
                     echo "<div class='card edit-form-popup' style='padding:10px'>"
-                        . "<form method='post' action='' class='edit-pupil-form'>"
+                        . "<form method='post' action=''>"
                         . "<input type='hidden' name='editPupilId' value='{$pupilId}'>"
                         . "<label>Name:<br><input type='text' name='editPupilNames' value='" . ($row['pupilNames']) . "' required></label><br>"
                         . "<label>Address:<br><input type='text' name='editPupilAddress' value='" . ($row['pupilAddress']) . "' required></label><br>"
@@ -257,11 +276,13 @@
                     </div>";
             } else {
                 $stmt = $conn->prepare("UPDATE Pupils SET pupilNames=?, pupilAddress=?, medicalInformation=?, classId=? WHERE pupilId=?");
-                $stmt->bind_param("sssii", $editPupilNames, $editPupilAddress, $editMedicalInformation, $editPupilClassId, $editPupilId);
+                $stmt->bind_param("sssii", $editPupilNames, $editPupilAddress, $editMedicalInformation, $editPupilClassId, $editPupilId);              
                 if ($stmt->execute()) {
-                    //uses PHP header redirect to refresh the page after successful update
+                    //uses PHP header redirect to refresh the page after successful update and show success message
+                    $_SESSION['success'] = "Pupil updated successfully.";
                     header("Location: " . $_SERVER['REQUEST_URI']);
                     exit();
+                                    
                 } else {
                     echo "<div class='card'>
                             <p class='error'>Error: " . $stmt->error . "</p>

@@ -57,7 +57,7 @@ if (//checks if teh request method is post and the editClass fields are set
     }
     //shows any errors that happend during the edit process
     if (!empty($editClassErrors)) {
-        echo "<div class='card'><b>Edit Class Error(s):</b><ul>";
+        echo "<div class='card' style='background:#ff000022;'><b>Edit Class Error(s):</b><ul>";
         foreach ($editClassErrors as $error) {
             echo "<li class='error'>" . ($error) . "</li>";
         }
@@ -160,12 +160,14 @@ $result = $conn->query($sql);
 </head>
 <body>
 
+<h1 class="card">Manage Classes</h1>
+
 <!-- html for adding and removing classes dropdowns -->
-<div class='card row'>
+<div class='row'>
+    <!-- add  new class form -->
     <details class='form-details'>
-        <!-- add  new class form -->
         <summary class='button'>Add New Class</summary>
-        <form method="POST" action="" class="class-form">
+        <form method="POST" action="" class="card">
             <label>Class Name:<br>
                 <input type="text" name="className" class="input-boxes" required>
             </label>
@@ -192,9 +194,9 @@ $result = $conn->query($sql);
     <!-- Remove Class Form -->
     <details class='form-details'>
         <summary class='button'>Remove Class</summary>
-        <form method="POST" action="" class="class-form">
+        <form method="POST" action="" class="card">
             <label for="classId">Select Class:<br>
-                <select id="classId" name="classId" class="input-boxes select-class" required>
+                <select id="classId" name="classId" class="input-boxes" required>
                     <!-- php to show all the class options -->
                     <?php
                     $classListResult = $conn->query("SELECT classId, className FROM Class");
@@ -207,22 +209,26 @@ $result = $conn->query($sql);
                 </select>
             </label>
             <input type="hidden" name="removeClass" value="1">
-            <input type="submit" value="Remove Class" class="button remove-btn">
+            <input type="submit" value="Remove Class" class="button">
         </form>
     </details>
 </div>
 
+
+
+
+
 <!-- php to display error and success messages when adding or removing classes -->
 <?php
 if (!empty($addClassErrors)) {
-    echo "<div class='card'><b>Add Class Error(s):</b><ul>";
+    echo "<div class='card' style='background:#ff000022;'><b>Add Class Error(s):</b><ul>";
     foreach ($addClassErrors as $error) {
         echo "<li class='error'>" . ($error) . "</li>";
     }
     echo "</ul></div>";
 }
 if (!empty($removeClassErrors)) {
-    echo "<div class='card'><b>Remove Class Error(s):</b><ul>";
+    echo "<div class='card' style='background:#ff000022;'><b>Remove Class Error(s):</b><ul>";
     foreach ($removeClassErrors as $error) {
         echo "<li class='error'>" . ($error) . "</li>";
     }
@@ -231,6 +237,7 @@ if (!empty($removeClassErrors)) {
 if ($success) {
     echo "<p class='success'>" . ($success) . "</p>";
 }
+//display success message after editing a class
 if (isset($_SESSION['success'])) {
     echo "<p class='success'>" . ($_SESSION['success']) . "</p>";
     unset($_SESSION['success']);
@@ -288,7 +295,7 @@ if ($result && $result->num_rows > 0) {
         //checks if the current class row is the one being edited
         if ($editClassId == $row['classId'] && $editClassData) {
             echo "<div class='card edit-form-popup' style='padding:10px;'>"
-                . "<form method='post' action='' class='edit-class-form'>"
+                . "<form method='post' action=''>"
                 . "<input type='hidden' name='editClassId' value='" . ($editClassData['classId']) . "'>"
                 . "<label>Class Name:<br><input type='text' name='editClassName' value='" . ($editClassData['className']) . "' required></label><br>"
                 . "<label>Class Capacity:<br><input type='number' name='editClassCapacity' class='input-boxes' value='" . ($editClassData['classCapacity']) . "' min='1' required></label><br>"
